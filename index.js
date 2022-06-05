@@ -4,22 +4,21 @@ const fs = require('fs');
 
 (async() => {
     const video = "https://www.youtube.com/watch?v=jNQXAC9IVRw"
-    const browser = await puppeteer.launch(
-        { headless: false, executablePath: process.env.CHROME_BIN || null, args: [
-            '--no-sandbox', '--disable-setuid-sandbox',
-        ], ignoreHTTPSErrors: true, dumpio: false}
-    );
-
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
-    await page.setJavaScriptEnabled(true);
-    await page.setDefaultNavigationTimeout(0);
     await page.goto(video, { waitUntil: 'networkidle0' });
 
-    await page.waitForSelector('body > ytd-app:nth-child(9) > div#content.style-scope.ytd-app:nth-child(10) > ytd-page-manager#page-manager.style-scope.ytd-app:nth-child(4) > ytd-watch-flexy.style-scope.ytd-page-manager.hide-skeleton > div#columns.style-scope.ytd-watch-flexy:nth-child(8) > div#primary.style-scope.ytd-watch-flexy:nth-child(1) > div#primary-inner.style-scope.ytd-watch-flexy > div.watch-active-metadata.style-scope.ytd-watch-flexy:nth-child(7) > div#info.style-scope.ytd-watch-flexy:nth-child(1) > div#info-contents.style-scope.ytd-watch-flexy:nth-child(2) > ytd-video-primary-info-renderer.style-scope.ytd-watch-flexy > div#container.style-scope.ytd-video-primary-info-renderer > div#info.style-scope.ytd-video-primary-info-renderer:nth-child(6) > div#menu-container.style-scope.ytd-video-primary-info-renderer:nth-child(3) > div#menu.style-scope.ytd-video-primary-info-renderer:nth-child(1) > ytd-menu-renderer.style-scope.ytd-video-primary-info-renderer > yt-icon-button#button.dropdown-trigger.style-scope.ytd-menu-renderer:nth-child(3) > button#button.style-scope.yt-icon-button:nth-child(1)', {
-    visible: true,
-    });
+    // await page.click('aria-label="More actions"');
+    // const buttons = await page.$$('button[class*="--slot-available"]')
+    const buttons = await page.$$('button[aria-label="More actions"]')
+    // const buttons = await page.$$('button')
 
-    await page.click('body > ytd-app:nth-child(9) > div#content.style-scope.ytd-app:nth-child(10) > ytd-page-manager#page-manager.style-scope.ytd-app:nth-child(4) > ytd-watch-flexy.style-scope.ytd-page-manager.hide-skeleton > div#columns.style-scope.ytd-watch-flexy:nth-child(8) > div#primary.style-scope.ytd-watch-flexy:nth-child(1) > div#primary-inner.style-scope.ytd-watch-flexy > div.watch-active-metadata.style-scope.ytd-watch-flexy:nth-child(7) > div#info.style-scope.ytd-watch-flexy:nth-child(1) > div#info-contents.style-scope.ytd-watch-flexy:nth-child(2) > ytd-video-primary-info-renderer.style-scope.ytd-watch-flexy > div#container.style-scope.ytd-video-primary-info-renderer > div#info.style-scope.ytd-video-primary-info-renderer:nth-child(6) > div#menu-container.style-scope.ytd-video-primary-info-renderer:nth-child(3) > div#menu.style-scope.ytd-video-primary-info-renderer:nth-child(1) > ytd-menu-renderer.style-scope.ytd-video-primary-info-renderer > yt-icon-button#button.dropdown-trigger.style-scope.ytd-menu-renderer:nth-child(3) > button#button.style-scope.yt-icon-button:nth-child(1)');
+    for (const button of buttons) {
+        // console.dir(button)
+        // await button.click();
+        await button.evaluate(b => b.click());
+
+    }
 
     const html = await page.content();
 
@@ -33,5 +32,5 @@ const fs = require('fs');
     //     console.log(i, $(row).find('yt-formatted-string').text());
     // });
 
-    await browser.close();
+    // await browser.close();
 })();
