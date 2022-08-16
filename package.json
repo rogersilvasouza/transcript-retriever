@@ -1,0 +1,25 @@
+{
+  "name": "transcript-retriever",
+  "version": "0.0.1",
+  "description": "Return the audio transcript of a YouTube video",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Roger Souza <rogersilvasouza@hotmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.11",
+    "lodash": "^4.17.21",
+    "puppeteer": "^14.1.1"
+  },
+  "devDependencies": {
+    "git-cz": "^4.9.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  }
+}
