@@ -2,7 +2,7 @@ const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const lodash = require('lodash');
 const fs = require('fs');
-const video = "https://www.youtube.com/watch?v=IBoteLHV-jo";
+const video = "https://www.youtube.com/watch?v=thYZEWVv3mE";
 
 (async() => {
     console.time('get-data');
