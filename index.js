@@ -3,7 +3,9 @@ const puppeteer = require('puppeteer');
 const lodash = require('lodash');
 const fs = require('fs');
 const video = "https://www.youtube.com/watch?v=PWkNNqBF30w";
+const channel = "https://www.youtube.com/feeds/videos.xml?channel_id=UC3uYvpJ3J6oNoNYRXfZXjEw";
 const { exec } = require("child_process");
+const htmlparser2 = require("htmlparser2");
 
 (async() => {
     console.time('get-data');
@@ -55,4 +57,6 @@ const { exec } = require("child_process");
         }
         console.log(`stdout: ${stdout}`);
     });
+
+    // const feed = htmlparser2.parseFeed(content, options);
 })();
