@@ -1,18 +1,20 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const lodash = require('lodash');
-const fs = require('fs');
-const video = "https://www.youtube.com/watch?v=PWkNNqBF30w";
-const channel = "https://www.youtube.com/feeds/videos.xml?channel_id=UC3uYvpJ3J6oNoNYRXfZXjEw";
-const { exec } = require("child_process");
-const htmlparser2 = require("htmlparser2");
 
 (async() => {
     console.time('get-data');
-    const browser = await puppeteer.launch({ headless: false });
+
+    let id = process.argv.slice(2);
+
+
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
-    await page.goto(video, { waitUntil: 'networkidle0' });
+    await page.goto(
+        `https://www.youtube.com/watch?v=${id}`,
+        { waitUntil: 'networkidle0' }
+    );
 
     const awaitOnButtonMoreActions = await page.$$('button[aria-label="More actions"]');
 
@@ -32,31 +34,19 @@ const htmlparser2 = require("htmlparser2");
 
     await page.waitForSelector('#segments-container > ytd-transcript-segment-renderer')
 
-    const html = await page.content();
-
-    const $ = cheerio.load(html);
+    const $ = cheerio.load(
+        await page.content()
+    );
 
     $('.style-scope ytd-transcript-segment-renderer > div').each((i, row) => {
-        console.log(i);
-        console.log(lodash.trim($(row).find('.segment-timestamp').text()));
-        console.log(lodash.trim($(row).find('.segment-text').text()));
+        console.log(
+            lodash.trim(i),
+            lodash.trim($(row).find('.segment-timestamp').text()),
+            lodash.trim($(row).find('.segment-text').text())
+        );
     });
 
     await browser.close();
 
     console.timeEnd('get-data');
-
-    exec("ls -la", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
-
-    // const feed = htmlparser2.parseFeed(content, options);
 })();
