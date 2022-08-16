@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const lodash = require('lodash');
 const fs = require('fs');
 const video = "https://www.youtube.com/watch?v=PWkNNqBF30w";
+const { exec } = require("child_process");
 
 (async() => {
     console.time('get-data');
@@ -42,4 +43,16 @@ const video = "https://www.youtube.com/watch?v=PWkNNqBF30w";
     await browser.close();
 
     console.timeEnd('get-data');
+
+    exec("ls -la", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    });
 })();
