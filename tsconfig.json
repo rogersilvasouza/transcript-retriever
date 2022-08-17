@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": [
-      "ES6",
-      "dom",
-    ],
+    "lib": ["ES6", "dom"],
     "moduleResolution": "Node",
     "rootDir": ".",
     "outDir": "build",
@@ -21,8 +18,5 @@
     "noImplicitThis": false,
     "strictNullChecks": false
   },
-  "include": [
-    "src/**/*",
-    "__tests__/**/*"
-  ]
+  "include": ["src/**/*", "__tests__/**/*"]
 }
