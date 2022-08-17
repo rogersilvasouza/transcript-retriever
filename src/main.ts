@@ -15,7 +15,7 @@ async function transcription(): Promise<void> {
         { waitUntil: 'networkidle0' }
     );
 
-    const awaitOnButtonMoreActions = await page.$$('button[aria-label="More actions"]');
+    const awaitOnButtonMoreActions: puppeteer.ElementHandle<Element>[] = await page.$$('button[aria-label="More actions"]');
 
     for (const buttonMoreActions of awaitOnButtonMoreActions) {
         await buttonMoreActions.evaluate((i: HTMLElement) => {
