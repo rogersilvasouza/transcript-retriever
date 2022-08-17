@@ -1,25 +1,50 @@
 {
   "name": "transcript-retriever",
-  "version": "0.0.1",
-  "description": "Return the audio transcript of a YouTube video",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Roger Souza <rogersilvasouza@hotmail.com>",
-  "license": "ISC",
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.11",
-    "lodash": "^4.17.21",
-    "puppeteer": "^14.1.1"
+  "version": "0.0.0",
+  "description": "Recover transcripts from a video",
+  "type": "module",
+  "engines": {
+    "node": ">= 16.13 <17"
   },
   "devDependencies": {
-    "git-cz": "^4.9.0"
+    "@types/cheerio": "^0.22.31",
+    "@types/jest": "~28.1",
+    "@types/lodash": "^4.14.183",
+    "@types/node": "^18.7.6",
+    "@types/puppeteer": "^5.4.6",
+    "@typescript-eslint/eslint-plugin": "~5.33",
+    "@typescript-eslint/parser": "~5.33",
+    "cheerio": "^1.0.0-rc.12",
+    "eslint": "~8.22",
+    "eslint-config-prettier": "~8.5",
+    "eslint-plugin-jest": "~26.8",
+    "jest": "~28.1",
+    "lodash": "^4.17.21",
+    "prettier": "~2.7",
+    "puppeteer": "^16.1.1",
+    "rimraf": "~3.0",
+    "ts-jest": "~28.0",
+    "tsutils": "~3.21",
+    "typescript": "~4.7"
   },
-  "config": {
-    "commitizen": {
-      "path": "git-cz"
-    }
+  "scripts": {
+    "start": "node build/src/main.js",
+    "clean": "rimraf coverage build tmp",
+    "prebuild": "npm run lint",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -w -p tsconfig.json",
+    "build:release": "npm run clean && tsc -p tsconfig.release.json",
+    "lint": "eslint . --ext .ts --ext .mts",
+    "test": "jest --coverage",
+    "prettier": "prettier --config .prettierrc --write .",
+    "test:watch": "jest --watch"
+  },
+  "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "tslib": "~2.4"
+  },
+  "volta": {
+    "node": "16.13.0"
   }
 }
