@@ -5,8 +5,13 @@
 ### To run local
 
 ```
-npm ci
-node index.js
+rm -rf node_modules package-lock.json
+npm update
+npm run prebuild
+npm run prettier
+npm run test
+npm run build
+node build/src/main.js kRCWUrCZoTI
 ```
 
 ## Available Scripts
