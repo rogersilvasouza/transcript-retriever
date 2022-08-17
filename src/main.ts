@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import * as cheerio from 'cheerio';
+import { load as cheerio } from 'cheerio';
 import _ from 'lodash';
 
 async function transcription(): Promise<void> {
@@ -37,7 +37,7 @@ async function transcription(): Promise<void> {
     '#segments-container > ytd-transcript-segment-renderer',
   );
 
-  const $ = cheerio.load(await page.content());
+  const $ = cheerio(await page.content());
 
   $('.style-scope ytd-transcript-segment-renderer > div').each((i, row) => {
     console.log(
