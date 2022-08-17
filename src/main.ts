@@ -1,14 +1,13 @@
-import * as puppeteer from 'puppeteer';
-import { load as cheerio } from 'cheerio';
 import _ from 'lodash';
+import { load as cheerio } from 'cheerio';
+import * as puppeteer from 'puppeteer';
 
 async function transcription(): Promise<void> {
   console.time('get-data');
 
-  const id = process.argv.slice(2);
-
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
+  const id: string[] = process.argv.slice(2);
+  const browser: puppeteer.Browser = await puppeteer.launch({ headless: true });
+  const page: puppeteer.Page = await browser.newPage();
 
   await page.goto(`https://www.youtube.com/watch?v=${id}`, {
     waitUntil: 'networkidle0',
@@ -23,7 +22,7 @@ async function transcription(): Promise<void> {
     });
   }
 
-  const items = await page.$$(
+  const items: puppeteer.ElementHandle<Element>[] = await page.$$(
     '#items > ytd-menu-service-item-renderer > tp-yt-paper-item',
   );
 
@@ -39,13 +38,15 @@ async function transcription(): Promise<void> {
 
   const $ = cheerio(await page.content());
 
-  $('.style-scope ytd-transcript-segment-renderer > div').each((i, row) => {
-    console.log(
-      i,
-      _.trim($(row).find('.segment-timestamp').text()),
-      _.trim($(row).find('.segment-text').text()),
-    );
-  });
+  $('.style-scope ytd-transcript-segment-renderer > div').each(
+    (index, element) => {
+      console.log(
+        index,
+        _.trim($(element).find('.segment-timestamp').text()),
+        _.trim($(element).find('.segment-text').text()),
+      );
+    },
+  );
 
   await browser.close();
 
