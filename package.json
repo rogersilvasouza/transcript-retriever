@@ -4,7 +4,7 @@
   "description": "Recover transcripts from a video",
   "type": "module",
   "engines": {
-    "node": ">= 16.13 <17"
+    "node": ">= 21 <22"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",

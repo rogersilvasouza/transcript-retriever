@@ -6,7 +6,9 @@ async function transcription(): Promise<void> {
   console.time('get-data');
 
   const id: string[] = process.argv.slice(2);
-  const browser: puppeteer.Browser = await puppeteer.launch({ headless: true });
+  const browser: puppeteer.Browser = await puppeteer.launch({
+    headless: false,
+  });
   const page: puppeteer.Page = await browser.newPage();
 
   await page.goto(`https://www.youtube.com/watch?v=${id}`, {
@@ -14,7 +16,7 @@ async function transcription(): Promise<void> {
   });
 
   const awaitOnButtonMoreActions: puppeteer.ElementHandle<Element>[] =
-    await page.$$('button[aria-label="More actions"]');
+    await page.$$('tp-yt-paper-button#expand');
 
   for (const buttonMoreActions of awaitOnButtonMoreActions) {
     await buttonMoreActions.evaluate((i: HTMLElement) => {
@@ -23,7 +25,7 @@ async function transcription(): Promise<void> {
   }
 
   const items: puppeteer.ElementHandle<Element>[] = await page.$$(
-    '#items > ytd-menu-service-item-renderer > tp-yt-paper-item',
+    '.ytd-video-description-transcript-section-renderer',
   );
 
   for (const item of items) {
