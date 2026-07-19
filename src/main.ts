@@ -1,58 +1,59 @@
-import _ from 'lodash';
-import { load as cheerio } from 'cheerio';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 
-async function transcription(): Promise<void> {
+async function transcription() {
   console.time('get-data');
 
-  const id: string[] = process.argv.slice(2);
-  const browser: puppeteer.Browser = await puppeteer.launch({
+  const [videoId] = process.argv.slice(2);
+
+  if (!videoId) {
+    throw new Error('Usage: npm start -- <YouTube video ID>');
+  }
+
+  const browser = await puppeteer.launch({
     headless: false,
   });
-  const page: puppeteer.Page = await browser.newPage();
 
-  await page.goto(`https://www.youtube.com/watch?v=${id}`, {
-    waitUntil: 'networkidle0',
-  });
+  try {
+    const page = await browser.newPage();
 
-  const awaitOnButtonMoreActions: puppeteer.ElementHandle<Element>[] =
-    await page.$$('tp-yt-paper-button#expand');
-
-  for (const buttonMoreActions of awaitOnButtonMoreActions) {
-    await buttonMoreActions.evaluate((i: HTMLElement) => {
-      i.click();
+    await page.goto(`https://www.youtube.com/watch?v=${videoId}`, {
+      waitUntil: 'networkidle0',
     });
-  }
 
-  const items: puppeteer.ElementHandle<Element>[] = await page.$$(
-    '.ytd-video-description-transcript-section-renderer',
-  );
-
-  for (const item of items) {
-    await item.evaluate((i: HTMLElement) => {
-      i.click();
+    await page.$$eval('tp-yt-paper-button#expand', (buttons) => {
+      buttons.forEach((button) => (button as HTMLElement).click());
     });
+
+    await page.$$eval(
+      '.ytd-video-description-transcript-section-renderer',
+      (items) => {
+        items.forEach((item) => (item as HTMLElement).click());
+      },
+    );
+
+    await page.waitForSelector(
+      '#segments-container > ytd-transcript-segment-renderer',
+    );
+
+    const segments = await page.$$eval(
+      'ytd-transcript-segment-renderer',
+      (elements) =>
+        elements.map((element) => ({
+          timestamp:
+            element.querySelector('.segment-timestamp')?.textContent?.trim() ??
+            '',
+          text:
+            element.querySelector('.segment-text')?.textContent?.trim() ?? '',
+        })),
+    );
+
+    segments.forEach(({ timestamp, text }, index) => {
+      console.log(index, timestamp, text);
+    });
+  } finally {
+    await browser.close();
+    console.timeEnd('get-data');
   }
-
-  await page.waitForSelector(
-    '#segments-container > ytd-transcript-segment-renderer',
-  );
-
-  const $ = cheerio(await page.content());
-
-  $('.style-scope ytd-transcript-segment-renderer > div').each(
-    (index, element) => {
-      console.log(
-        index,
-        _.trim($(element).find('.segment-timestamp').text()),
-        _.trim($(element).find('.segment-text').text()),
-      );
-    },
-  );
-
-  await browser.close();
-
-  console.timeEnd('get-data');
 }
 
-transcription();
+await transcription();

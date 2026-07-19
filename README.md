@@ -1,28 +1,18 @@
 # Transcript Retriever
 
-## 📹 Return the audio transcript of a YouTube video
+Returns the transcript of a YouTube video.
 
-### To run local
+## Requirements
 
-```
-rm -rf node_modules package-lock.json
-npm update
-npm run prebuild
-npm run prettier
-npm run test
+- Node.js 22.13 or newer
+
+## Run
+
+```sh
+npm install
 npm run build
-node build/src/main.js kRCWUrCZoTI
+npm start -- kRCWUrCZoTI
 ```
 
-## Available Scripts
-
-- `clean` - remove coverage data, Jest cache and transpiled files,
-- `prebuild` - lint source files and tests before building,
-- `build` - transpile TypeScript to ES6,
-- `build:watch` - interactive watch mode to automatically transpile source files,
-- `lint` - lint source files and tests,
-- `prettier` - reformat files,
-- `test` - run tests,
-- `test:watch` - interactive watch mode to automatically re-run tests
-
-Project maded with https://github.com/jsynowiec/node-typescript-boilerplate
+The browser opens visibly so you can handle consent prompts or sign in when
+YouTube requires it.
