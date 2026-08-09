@@ -22,7 +22,7 @@
   "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "puppeteer": "^25.4.0"
+    "puppeteer": "^25.5.0"
   },
   "allowScripts": {
     "puppeteer@25.3.0": true
