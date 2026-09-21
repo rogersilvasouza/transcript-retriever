@@ -8,8 +8,8 @@
     "npm": ">=12"
   },
   "devDependencies": {
-    "@types/node": "^26.5.1",
-    "prettier": "^3.9.6",
+    "@types/node": "^26.6.1",
+    "prettier": "^3.9.7",
     "typescript": "^7.0.2"
   },
   "scripts": {
@@ -23,7 +23,7 @@
   "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "puppeteer": "^25.10.0"
+    "puppeteer": "^25.11.0"
   },
   "allowScripts": {
     "puppeteer@25.3.0": true
